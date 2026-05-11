@@ -20,7 +20,7 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
 .nav{position:sticky;top:0;z-index:200;background-color:var(--bg);border-bottom:1px solid var(--border);box-shadow:0 4px 12px -4px rgba(0,0,0,.08);}
 .nav-inner{max-width:1120px;margin:0 auto;padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between;}
 .nav-brand{font-family:'EB Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--navy);text-decoration:none;}
-.nav-links{display:flex;gap:28px;}
+.nav-links{display:flex;gap:16px;}
 .nav-links a{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);text-decoration:none;transition:color .15s;}
 .nav-links a:hover,.nav-links a.active{color:var(--gold);}
 .nav-quiz-btn{background:var(--navy);color:#fff;padding:7px 18px;border-radius:4px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;border:none;cursor:pointer;transition:opacity .15s;}
@@ -84,7 +84,7 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;z-index:999;background:rgba(252,248,250,.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s ease;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal-box{background:white;border:1px solid var(--border);border-radius:12px;padding:44px 40px 36px;max-width:520px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.12);animation:slideUp .3s ease;}
+.modal-box{background:white;border:1px solid var(--border);border-radius:12px;padding:44px 40px 36px;max-width:520px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.12);animation:slideUp .3s ease;max-height:92vh;overflow-y:auto;}
 @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 .modal-box .eyebrow{text-align:center;margin-bottom:12px;}
 .modal-box h2{font-family:'EB Garamond',serif;font-size:1.7rem;font-weight:500;color:var(--navy);text-align:center;margin-bottom:10px;}
@@ -153,10 +153,14 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
   <div class="nav-inner">
     <a href="#" class="nav-brand">American Jewish Life</a>
     <nav class="nav-links">
-      <a href="#" class="active">The Data</a>
+      <a href="#" class="active">Overview</a>
       <a href="#s2">Practice</a>
       <a href="#s5">Continuity</a>
       <a href="#s6">Politics</a>
+      <a href="#s7">Religion</a>
+      <a href="#s8">Demographics</a>
+      <a href="#s9">Israel</a>
+      <a href="#s10">Culture</a>
     </nav>
     <button class="nav-quiz-btn" onclick="document.getElementById('quizModal').style.display='flex'">Take the Quiz</button>
   </div>
@@ -167,7 +171,7 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
   <div class="modal-box">
     <p class="eyebrow">JS 382 Final Project · Daniel Soufer</p>
     <h2>American Jewish Life:<br><em>A Data Portrait</em></h2>
-    <p>This site visualizes data from the Pew Research Center's 2020 survey of 4,718 Jewish adults — the most comprehensive study of American Jews in a generation. Here's what we'll explore:</p>
+    <p>This site visualizes data from the Pew Research Center's 2020 survey of 4,718 Jewish adults — the most comprehensive study of American Jews in a generation. Ten sections covering:</p>
     <div class="welcome-sections">
       <div class="welcome-sec"><div class="welcome-sec-num">01 — Overview</div><div class="welcome-sec-name">Four Denominations</div></div>
       <div class="welcome-sec"><div class="welcome-sec-num">02 — Practice</div><div class="welcome-sec-name">What Jews Actually Do</div></div>
@@ -175,6 +179,10 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
       <div class="welcome-sec"><div class="welcome-sec-num">04 — Community</div><div class="welcome-sec-name">Social Connectedness</div></div>
       <div class="welcome-sec"><div class="welcome-sec-num">05 — Continuity</div><div class="welcome-sec-name">Intermarriage & the Future</div></div>
       <div class="welcome-sec"><div class="welcome-sec-num">06 — Politics</div><div class="welcome-sec-name">Overwhelmingly Democratic — Except Orthodox</div></div>
+      <div class="welcome-sec"><div class="welcome-sec-num">07 — Religion</div><div class="welcome-sec-name">Jews by Religion vs. No Religion</div></div>
+      <div class="welcome-sec"><div class="welcome-sec-num">08 — Demographics</div><div class="welcome-sec-name">Generations & Education</div></div>
+      <div class="welcome-sec"><div class="welcome-sec-num">09 — Israel</div><div class="welcome-sec-name">Solidarity & Political Views</div></div>
+      <div class="welcome-sec"><div class="welcome-sec-num">10 — Culture</div><div class="welcome-sec-name">Jewish Cultural Life</div></div>
     </div>
     <div class="modal-actions">
       <button class="btn-primary" onclick="closeWelcome()">Let's Go &rarr;</button>
@@ -405,6 +413,118 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
 </section>
 </div>
 
+
+<!-- §7 JEWS BY RELIGION VS. NO RELIGION -->
+<div class="section-outer" id="s7">
+<section class="section">
+  <div class="section-header">
+    <p class="section-num">07 — Jews by Religion vs. No Religion</p>
+    <h2>Two Very Different Jewish Worlds</h2>
+    <p class="lead">Pew divides Jewish Americans into "Jews by religion" (73%) — those who say their religion is Jewish — and "Jews of no religion" (27%), who identify Jewishly by culture or ancestry but not faith. The behavioral and attitudinal gaps are enormous.</p>
+  </div>
+  <div class="chart-card">
+    <p class="chart-title">Key Indicators — Jews by Religion vs. Jews of No Religion (%)</p>
+    <div style="position:relative;height:300px;"><canvas id="relNoRelChart"></canvas></div>
+  </div>
+  <div class="grid-2" style="margin-top:16px;">
+    <div class="chart-card">
+      <p class="chart-title">Intermarriage Rate by Denomination — Currently Married Jews</p>
+      <div style="position:relative;height:220px;"><canvas id="intermarDenomChart"></canvas></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="stat-card" style="border-top:3px solid var(--c-ref)">
+        <div class="big-num" style="color:var(--c-ref)">79%</div>
+        <div class="stat-label">Jews of No Religion married to a non-Jewish spouse</div>
+        <div class="sub-label">vs. 32% of Jews by Religion</div>
+      </div>
+      <div class="stat-card" style="border-top:3px solid var(--gold)">
+        <div class="big-num" style="color:var(--gold)">63%</div>
+        <div class="stat-label">Jews by Religion raising children Jewish by religion</div>
+        <div class="sub-label">vs. ~8% of Jews of No Religion</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><strong>The religious/secular divide:</strong> "Jews of no religion" are not simply less observant — they represent a fundamentally different form of Jewish identity rooted in culture and ancestry. Their children are far less likely to identify as Jewish at all, which is why this 27% share of U.S. Jewish adults sits at the center of the continuity debate.</div>
+</section>
+</div>
+
+<!-- §8 GENERATIONS & DEMOGRAPHICS -->
+<div class="section-outer" id="s8">
+<section class="section">
+  <div class="section-header">
+    <p class="section-num">08 — Generations & Demographics</p>
+    <h2>An Aging Movement — Except Orthodox</h2>
+    <p class="lead">Jewish America's generational profile reveals denominations on divergent trajectories. Reform and Conservative Jews skew dramatically older while Orthodox Jews have the youngest age profile of any denomination — a gap with compounding long-term consequences.</p>
+  </div>
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <p class="chart-title">% of Each Age Group Identifying with Each Denomination</p>
+      <div class="chart-filter" id="filter-genDenom"></div>
+    </div>
+    <div style="position:relative;height:280px;"><canvas id="genDenomChart"></canvas></div>
+  </div>
+  <div class="grid-2" style="margin-top:16px;">
+    <div class="chart-card">
+      <p class="chart-title">Educational Attainment — Jews vs. U.S. Adults (%)</p>
+      <div style="position:relative;height:220px;"><canvas id="eduCompChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <p class="chart-title">Geographic Distribution — Jews vs. U.S. Adults (%)</p>
+      <div style="position:relative;height:220px;"><canvas id="geoCompChart"></canvas></div>
+    </div>
+  </div>
+  <div class="insight"><strong>The education gap:</strong> 60% of Jewish Americans hold a college degree vs. 30% of U.S. adults; 28% hold a postgraduate degree vs. 11% nationally. This multi-generation educational overrepresentation shapes Jewish political alignment, urban concentration, and economic profile — distinguishing American Jewry from virtually every other U.S. religious community.</div>
+</section>
+</div>
+
+<!-- §9 ISRAEL & JEWISH SOLIDARITY -->
+<div class="section-outer" id="s9">
+<section class="section">
+  <div class="section-header">
+    <p class="section-num">09 — Israel & Jewish Solidarity</p>
+    <h2>A Divided Relationship with Israel</h2>
+    <p class="lead">Views on Israel diverge sharply by denomination and by politics. Orthodox Jews feel the strongest connection to Israeli Jews; Reform and unaffiliated Jews feel much less. Meanwhile, non-Jewish Republicans' support for Israel does not necessarily extend to favorable views of American Jews.</p>
+  </div>
+  <div class="chart-card">
+    <p class="chart-title">% Feeling "A Lot in Common" with Israeli Jews — by Denomination & Political Lean</p>
+    <div style="position:relative;height:280px;"><canvas id="israelCommonChart"></canvas></div>
+  </div>
+  <div class="chart-card" style="margin-top:16px;">
+    <p class="chart-title">Non-Jewish Americans: Favorable Views Toward Israel vs. Toward U.S. Jews</p>
+    <div style="position:relative;height:240px;"><canvas id="partyFriendlyChart"></canvas></div>
+  </div>
+  <div class="insight-grid">
+    <div class="insight" style="margin-top:0"><strong>Orthodox–Reform gulf:</strong> 67% of Orthodox Jews feel "a lot in common" with Israeli Jews; only 12% of Reform Jews say the same. 60% of Reform Jews report feeling "little or nothing in common" with Orthodox Jews — a split running through the heart of U.S. Jewish communal life.</div>
+    <div class="insight" style="margin-top:0"><strong>Philo-Semitism without solidarity:</strong> Non-Jewish Trump supporters rate Israel favorably (63%) at a higher rate than they rate U.S. Jews favorably (31%). Christian Zionism drives pro-Israel sentiment independently of views about Jewish Americans themselves.</div>
+  </div>
+</section>
+</div>
+
+<!-- §10 CULTURAL LIFE -->
+<div class="section-outer" id="s10">
+<section class="section">
+  <div class="section-header">
+    <p class="section-num">10 — Cultural Life</p>
+    <h2>Judaism Through Culture and Objects</h2>
+    <p class="lead">For many American Jews — especially the unaffiliated — Judaism is primarily a cultural identity. Most own Jewish ritual objects and engage with Jewish content, even without regular synagogue attendance or formal religious practice.</p>
+  </div>
+  <div class="grid-2">
+    <div class="chart-card">
+      <p class="chart-title">Sources of Jewish Meaning — % Selecting Each</p>
+      <div style="position:relative;height:200px;"><canvas id="jewishMeaningChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <p class="chart-title">Jewish Ritual Objects Owned — All U.S. Jews (%)</p>
+      <div style="position:relative;height:200px;"><canvas id="jewishItemsChart"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card" style="margin-top:16px;">
+    <p class="chart-title">Jewish Cultural Practices — % Who Did Each in the Past Year</p>
+    <div style="position:relative;height:300px;"><canvas id="culturePracticeChart"></canvas></div>
+  </div>
+  <div class="insight"><strong>Culture as continuity:</strong> 72% of U.S. Jews made or ate traditional Jewish foods in the past year; 62% followed news about Jews or Judaism. Cultural engagement cuts across denominational lines — suggesting that even among "Jews of no religion," Jewish culture remains a living presence that may provide a bridge to more formal engagement.</div>
+</section>
+</div>
 
 <!-- FOOTER -->
 <footer class="footer">
@@ -669,6 +789,127 @@ charts.comparison = new Chart(document.getElementById('comparisonChart'), {
   options:{responsive:true,maintainAspectRatio:false,
     scales:{y:{max:100,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
     plugins:{legend:{labels:{color:'#1c1b1d',boxWidth:12,padding:14}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}}}
+});
+
+// 12. REL vs NO-REL — grouped bar
+charts.relNoRel = new Chart(document.getElementById('relNoRelChart'), {
+  type:'bar',
+  data:{labels:[['Jewish Identity','Very Important'],['Feel Part of','Jewish Community'],['Donated to','Jewish Org (Past Yr)'],['Synagogue','Member'],['Mark Shabbat','Meaningfully'],['Much in Common','w/ Israeli Jews']],
+    datasets:[
+      {label:'Jews by Religion',data:[74,63,61,61,55,52],backgroundColor:'rgba(61,127,193,.78)',borderColor:'#3d7fc1',borderWidth:1.5,borderRadius:3},
+      {label:'Jews of No Religion',data:[30,23,13,11,7,27],backgroundColor:'rgba(224,112,64,.6)',borderColor:'#e07040',borderWidth:1.5,borderRadius:3}
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{max:100,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
+    plugins:{legend:{labels:{color:'#1c1b1d',boxWidth:12,padding:14}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}}}
+});
+
+// 13. INTERMARRIAGE BY DENOMINATION — horizontal bar
+charts.intermarDenom = new Chart(document.getElementById('intermarDenomChart'), {
+  type:'bar',
+  data:{labels:['Orthodox','Conservative','Reform','No Denomination'],
+    datasets:[{label:'% with non-Jewish spouse',data:[2,25,42,68],
+      backgroundColor:['rgba(61,127,193,.78)','rgba(42,157,143,.78)','rgba(224,112,64,.78)','rgba(122,122,144,.78)'],
+      borderColor:['#3d7fc1','#2a9d8f','#e07040','#7a7a90'],borderWidth:1.5,borderRadius:3}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    scales:{x:{max:80,grid:{color:grid},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},afterFit(s){s.width=130;}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}% intermarried`}}}}
+});
+
+// 14. DENOMINATION BY AGE GROUP — stacked bar, dataset filter
+charts.genDenom = new Chart(document.getElementById('genDenomChart'), {
+  type:'bar',
+  data:{labels:['Ages 18–29','Ages 30–49','Ages 50–64','Ages 65+'],
+    datasets:[ds('Orthodox',[17,11,7,3]),ds('Conservative',[8,11,22,25]),ds('Reform',[29,37,35,44]),ds('Unaffiliated',[41,36,30,22])]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{stacked:true,max:100,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{stacked:true,grid:{display:false}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}}}
+});
+initFilter('filter-genDenom','genDenom','dataset');
+
+// 15. EDUCATION COMPARISON — grouped bar
+charts.eduComp = new Chart(document.getElementById('eduCompChart'), {
+  type:'bar',
+  data:{labels:['College Degree','Postgraduate Degree'],
+    datasets:[
+      {label:'Jewish Americans',data:[60,28],backgroundColor:'rgba(123,88,0,.72)',borderColor:'#7b5800',borderWidth:1.5,borderRadius:3},
+      {label:'U.S. Adults',data:[30,11],backgroundColor:'rgba(122,122,144,.45)',borderColor:'#7a7a90',borderWidth:1.5,borderRadius:3}
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{max:80,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
+    plugins:{legend:{labels:{color:'#1c1b1d',boxWidth:12,padding:14}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}}}
+});
+
+// 16. GEOGRAPHIC DISTRIBUTION — grouped bar
+charts.geoComp = new Chart(document.getElementById('geoCompChart'), {
+  type:'bar',
+  data:{labels:['Northeast','South','West','Midwest'],
+    datasets:[
+      {label:'Jewish Americans',data:[38,27,25,10],backgroundColor:'rgba(123,88,0,.72)',borderColor:'#7b5800',borderWidth:1.5,borderRadius:3},
+      {label:'U.S. Adults',data:[18,38,20,24],backgroundColor:'rgba(122,122,144,.45)',borderColor:'#7a7a90',borderWidth:1.5,borderRadius:3}
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{max:50,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
+    plugins:{legend:{labels:{color:'#1c1b1d',boxWidth:12,padding:14}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}}}
+});
+
+// 17. ISRAEL COMMONALITY — horizontal bar, colored by category
+charts.israelCommon = new Chart(document.getElementById('israelCommonChart'), {
+  type:'bar',
+  data:{labels:['Orthodox Jews','Conservative Jews','Reform Jews','No Denomination','Republican-Leaning Jews','Democrat-Leaning Jews','All U.S. Jews'],
+    datasets:[{label:'% feeling "a lot in common" with Israeli Jews',data:[67,30,12,9,40,12,19],
+      backgroundColor:['rgba(61,127,193,.78)','rgba(42,157,143,.78)','rgba(224,112,64,.78)','rgba(122,122,144,.78)','rgba(200,60,60,.65)','rgba(61,100,200,.65)','rgba(123,88,0,.72)'],
+      borderColor:['#3d7fc1','#2a9d8f','#e07040','#7a7a90','#c83c3c','#3d64c8','#7b5800'],borderWidth:1.5,borderRadius:3}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    scales:{x:{max:80,grid:{color:grid},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},afterFit(s){s.width=195;}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}% feel "a lot in common"`}}}}
+});
+
+// 18. PARTY FRIENDLY — grouped bar (toward Israel vs. toward U.S. Jews)
+charts.partyFriendly = new Chart(document.getElementById('partyFriendlyChart'), {
+  type:'bar',
+  data:{labels:['Trump Supporters','Republicans','Democrats'],
+    datasets:[
+      {label:'Favorable toward Israel',data:[63,57,45],backgroundColor:'rgba(61,127,193,.78)',borderColor:'#3d7fc1',borderWidth:1.5,borderRadius:3},
+      {label:'Favorable toward U.S. Jews',data:[31,29,52],backgroundColor:'rgba(224,112,64,.6)',borderColor:'#e07040',borderWidth:1.5,borderRadius:3}
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{max:80,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
+    plugins:{legend:{labels:{color:'#1c1b1d',boxWidth:12,padding:14}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}}}
+});
+
+// 19. JEWISH MEANING — horizontal bar
+charts.jewishMeaning = new Chart(document.getElementById('jewishMeaningChart'), {
+  type:'bar',
+  data:{labels:['Culture, arts & music','Ancestry & family history','Religion & prayer'],
+    datasets:[{label:'% selecting as important source of Jewish meaning',data:[55,52,36],
+      backgroundColor:'rgba(123,88,0,.72)',borderColor:'#7b5800',borderWidth:1.5,borderRadius:3}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    scales:{x:{max:70,grid:{color:grid},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},afterFit(s){s.width=165;}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}%`}}}}
+});
+
+// 20. JEWISH ITEMS — horizontal bar, denomination colors
+charts.jewishItems = new Chart(document.getElementById('jewishItemsChart'), {
+  type:'bar',
+  data:{labels:['Menorah / Chanukiah','Mezuzah','Siddur / Prayer Book','Seder Plate'],
+    datasets:[{label:'% who own this item',data:[80,66,60,56],
+      backgroundColor:['rgba(61,127,193,.78)','rgba(42,157,143,.78)','rgba(224,112,64,.78)','rgba(122,122,144,.78)'],
+      borderColor:['#3d7fc1','#2a9d8f','#e07040','#7a7a90'],borderWidth:1.5,borderRadius:3}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    scales:{x:{max:100,grid:{color:grid},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},afterFit(s){s.width=160;}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}% own this item`}}}}
+});
+
+// 21. CULTURAL PRACTICES — horizontal bar
+charts.culturePractice = new Chart(document.getElementById('culturePracticeChart'), {
+  type:'bar',
+  data:{labels:['Made or ate traditional Jewish foods','Followed news about Jews / Judaism','Read about Jewish history or culture','Watched Jewish-themed films or TV','Visited a Jewish museum or historic site','Read books by Jewish authors intentionally','Listened to Jewish music','Attended Jewish cultural events'],
+    datasets:[{label:'% who did this in the past year',data:[72,62,57,44,43,42,36,30],
+      backgroundColor:'rgba(61,127,193,.55)',borderColor:'#3d7fc1',borderWidth:1.5,borderRadius:3}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    scales:{x:{max:80,grid:{color:grid},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},afterFit(s){s.width=260;}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}% did this in the past year`}}}}
 });
 
 // ── QUIZ ──────────────────────────────────────
