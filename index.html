@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="An interactive data portrait of American Jewish life — beliefs, practice, identity, and politics — drawn from Pew Research Center's landmark 2020 survey of 4,718 Jewish adults.">
+<title>American Jewish Life — A Data Portrait</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✡</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Public+Sans:wght@300..700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#fcf8fa;--bg2:#f2efe9;--card:#ffffff;--border:#e0dbd0;--text:#1c1b1d;--muted:#6b6b80;--gold:#7b5800;--navy:#1a1a2e;--c-orth:#3d7fc1;--c-cons:#2a9d8f;--c-ref:#e07040;--c-unaf:#7a7a90;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px solid var(--border);box-shadow:0 4px 12px -4px rgba(0,0,0,.08);}
+.nav-inner{max-width:1120px;margin:0 auto;padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{font-family:'EB Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--navy);text-decoration:none;}
+.nav-links{display:flex;gap:28px;}
+.nav-links a{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);text-decoration:none;transition:color .15s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);}
+.nav-quiz-btn{background:var(--navy);color:#fff;padding:7px 18px;border-radius:4px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;border:none;cursor:pointer;transition:opacity .15s;}
+.nav-quiz-btn:hover{opacity:.85;}
+
+/* HERO */
+.hero{background:var(--bg);padding:80px 24px 64px;text-align:center;border-bottom:1px solid var(--border);}
+.eyebrow{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin-bottom:14px;}
+.hero h1{font-family:'EB Garamond',serif;font-size:clamp(2rem,5vw,3.4rem);font-weight:500;letter-spacing:-.02em;line-height:1.2;color:var(--navy);margin-bottom:14px;}
+.hero h1 em{font-style:italic;color:var(--gold);}
+.hero .subtitle{font-size:.97rem;color:var(--muted);max-width:560px;margin:0 auto 16px;line-height:1.75;}
+.hero-byline{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);opacity:.7;margin-bottom:36px;}
+.hero-stats{display:flex;justify-content:center;border:1px solid var(--border);border-radius:8px;overflow:hidden;max-width:700px;margin:0 auto;background:white;box-shadow:0 2px 12px rgba(0,0,0,.05);}
+.hero-stat{flex:1;min-width:140px;padding:22px 18px;text-align:center;border-right:1px solid var(--border);}
+.hero-stat:last-child{border-right:none;}
+.hero-stat .number{font-family:'EB Garamond',serif;font-size:2.2rem;font-weight:600;color:var(--gold);line-height:1;display:block;}
+.hero-stat .label{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:5px;line-height:1.5;}
+
+/* SECTIONS */
+.section-outer{border-bottom:1px solid var(--border);}
+.section-outer:nth-child(odd){background:var(--bg2);}
+.section{max-width:1080px;margin:0 auto;padding:64px 24px;}
+.section-header{margin-bottom:34px;}
+.section-num{font-size:.65rem;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin-bottom:8px;}
+.section h2{font-family:'EB Garamond',serif;font-size:1.9rem;font-weight:500;color:var(--navy);margin-bottom:10px;}
+.section .lead{font-size:.95rem;color:var(--muted);max-width:680px;line-height:1.75;}
+
+/* CARDS */
+.chart-card{background:white;border:1px solid var(--border);border-radius:8px;padding:22px 22px 16px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:border-color .2s;}
+.chart-card:hover{border-color:rgba(123,88,0,.35);}
+
+/* CHART CARD HEADER with inline filter */
+.chart-card-header{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.chart-title{font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);}
+.filter-sep{width:1px;height:16px;background:var(--border);margin:0 4px;flex-shrink:0;align-self:center;}
+
+/* PER-CHART FILTER BUTTONS */
+.chart-filter{display:flex;gap:6px;flex-wrap:wrap;}
+.cf-btn{display:inline-flex;align-items:center;gap:5px;padding:4px 10px 4px 7px;border:1px solid var(--border);border-radius:4px;background:white;cursor:pointer;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);transition:all .15s;white-space:nowrap;}
+.cf-btn.active{color:var(--dc);border-color:var(--dc);}
+.cf-btn:hover{border-color:var(--dc);opacity:.85;}
+.cb-box{width:13px;height:13px;border:1.5px solid var(--muted);border-radius:2px;flex-shrink:0;position:relative;transition:all .15s;}
+.cf-btn.active .cb-box{background:var(--dc);border-color:var(--dc);}
+.cf-btn.active .cb-box::after{content:'';position:absolute;width:6px;height:3.5px;border-left:1.5px solid white;border-bottom:1.5px solid white;transform:rotate(-45deg) translate(0.5px,-0.5px);top:3px;left:2px;}
+
+/* GRIDS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.continuity-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;align-items:start;}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;}
+
+/* STAT CARDS */
+.stat-card{background:white;border:1px solid var(--border);border-radius:8px;padding:18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.stat-card .big-num{font-family:'EB Garamond',serif;font-size:2.3rem;font-weight:600;line-height:1;margin-bottom:5px;}
+.stat-card .stat-label{font-size:.75rem;color:var(--muted);line-height:1.4;}
+.stat-card .sub-label{font-size:.67rem;color:var(--muted);opacity:.7;margin-top:4px;}
+
+/* INSIGHTS */
+.insight{border-left:4px solid var(--gold);background:var(--bg2);border-radius:0 6px 6px 0;padding:13px 17px;margin-top:16px;font-size:.83rem;color:var(--muted);line-height:1.65;}
+.insight strong{color:var(--text);}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:999;background:rgba(252,248,250,.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-box{background:white;border:1px solid var(--border);border-radius:12px;padding:44px 40px 36px;max-width:520px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.12);animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-box .eyebrow{text-align:center;margin-bottom:12px;}
+.modal-box h2{font-family:'EB Garamond',serif;font-size:1.7rem;font-weight:500;color:var(--navy);text-align:center;margin-bottom:10px;}
+.modal-box p{font-size:.87rem;color:var(--muted);text-align:center;line-height:1.7;margin-bottom:26px;}
+.modal-actions{display:flex;gap:12px;justify-content:center;}
+.btn-primary{display:inline-block;padding:11px 28px;background:var(--navy);color:white;border:none;border-radius:4px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;transition:opacity .15s;}
+.btn-primary:hover{opacity:.85;}
+.btn-skip{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:10px 22px;border-radius:4px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;transition:border-color .15s,color .15s;}
+.btn-skip:hover{border-color:var(--gold);color:var(--text);}
+.welcome-sections{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 26px;text-align:left;}
+.welcome-sec{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 13px;}
+.welcome-sec-num{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--gold);margin-bottom:2px;}
+.welcome-sec-name{font-size:.78rem;font-weight:600;color:var(--navy);}
+
+/* QUIZ */
+.quiz-wrap{max-width:620px;margin:0 auto;}
+.quiz-start{text-align:center;padding:32px 20px;}
+.quiz-start p{font-size:.92rem;color:var(--muted);max-width:460px;margin:0 auto 24px;line-height:1.7;}
+.quiz-progress{display:flex;align-items:center;gap:12px;margin-bottom:26px;}
+.quiz-progress-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.quiz-progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .3s ease;}
+.quiz-progress-text{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);white-space:nowrap;}
+.quiz-question{font-family:'EB Garamond',serif;font-size:1.3rem;color:var(--navy);margin-bottom:20px;line-height:1.45;}
+.quiz-options{display:flex;flex-direction:column;gap:9px;}
+.quiz-option{background:white;border:1.5px solid var(--border);border-radius:6px;padding:12px 17px;cursor:pointer;font-size:.87rem;color:var(--text);text-align:left;transition:border-color .15s,background .15s;}
+.quiz-option:hover{border-color:var(--gold);background:var(--bg2);}
+.quiz-option.selected{border-color:var(--gold);background:#fdf5e0;}
+.quiz-result{text-align:center;}
+.result-match{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:var(--muted);margin-bottom:5px;}
+.result-name{font-family:'EB Garamond',serif;font-size:2.4rem;font-weight:500;margin-bottom:5px;}
+.result-pew-note{font-size:.78rem;color:var(--muted);margin-bottom:26px;}
+.result-bars{text-align:left;margin-bottom:22px;}
+.result-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.result-bar-label{font-size:.76rem;width:100px;flex-shrink:0;color:var(--muted);}
+.result-bar-label.top{font-weight:700;color:var(--text);}
+.result-bar-track{flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden;}
+.result-bar-fill{height:100%;border-radius:5px;}
+.result-bar-pct{font-size:.76rem;width:130px;flex-shrink:0;text-align:right;color:var(--muted);}
+.result-bar-pct.top{color:var(--text);font-weight:700;}
+.result-desc{border-left:4px solid var(--gold);background:var(--bg2);border-radius:0 6px 6px 0;padding:13px 17px;font-size:.85rem;color:var(--muted);line-height:1.7;text-align:left;margin-bottom:18px;}
+.result-desc strong{color:var(--text);}
+.btn-retake{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:9px 22px;border-radius:4px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;transition:border-color .15s,color .15s;}
+.btn-retake:hover{border-color:var(--gold);color:var(--text);}
+.hidden{display:none!important;}
+
+/* FOOTER */
+.footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 24px;}
+.footer-inner{max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:24px;}
+.footer-brand{font-family:'EB Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:6px;}
+.footer-copy{font-size:.76rem;color:var(--muted);max-width:340px;line-height:1.7;}
+.footer-links{display:flex;gap:24px;align-items:center;flex-wrap:wrap;}
+.footer-links a{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-decoration:none;transition:color .15s;}
+.footer-links a:hover{color:var(--gold);}
+
+@media(max-width:820px){
+  .hero{padding:52px 20px 40px;}.section{padding:48px 20px;}.nav-links{display:none;}
+  .hero-stats{flex-direction:column;}.hero-stat{border-right:none;border-bottom:1px solid var(--border);}.hero-stat:last-child{border-bottom:none;}
+  .grid-2,.continuity-grid,.insight-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">American Jewish Life</a>
+    <nav class="nav-links">
+      <a href="#" class="active">The Data</a>
+      <a href="#s2">Practice</a>
+      <a href="#s5">Continuity</a>
+      <a href="#s6">Politics</a>
+    </nav>
+    <button class="nav-quiz-btn" onclick="document.getElementById('quizModal').style.display='flex'">Take the Quiz</button>
+  </div>
+</header>
+
+<!-- WELCOME MODAL (auto-shows first) -->
+<div class="modal-overlay" id="welcomeModal">
+  <div class="modal-box">
+    <p class="eyebrow">JS 382 Final Project · Daniel Soufer</p>
+    <h2>American Jewish Life:<br><em>A Data Portrait</em></h2>
+    <p>This site visualizes data from the Pew Research Center's 2020 survey of 4,718 Jewish adults — the most comprehensive study of American Jews in a generation. Here's what we'll explore:</p>
+    <div class="welcome-sections">
+      <div class="welcome-sec"><div class="welcome-sec-num">01 — Overview</div><div class="welcome-sec-name">Four Denominations</div></div>
+      <div class="welcome-sec"><div class="welcome-sec-num">02 — Practice</div><div class="welcome-sec-name">What Jews Actually Do</div></div>
+      <div class="welcome-sec"><div class="welcome-sec-num">03 — Identity</div><div class="welcome-sec-name">What Makes Someone Jewish?</div></div>
+      <div class="welcome-sec"><div class="welcome-sec-num">04 — Community</div><div class="welcome-sec-name">Social Connectedness</div></div>
+      <div class="welcome-sec"><div class="welcome-sec-num">05 — Continuity</div><div class="welcome-sec-name">Intermarriage & the Future</div></div>
+      <div class="welcome-sec"><div class="welcome-sec-num">06 — Politics</div><div class="welcome-sec-name">Overwhelmingly Democratic — Except Orthodox</div></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="closeWelcome()">Let's Go &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ MODAL (appears after welcome is dismissed) -->
+<div class="modal-overlay" id="quizModal" style="display:none">
+  <div class="modal-box">
+    <p class="eyebrow">Interactive</p>
+    <h2>Which denomination do you align with?</h2>
+    <p>Answer 10 questions about your beliefs, practices, and identity — scored against real Pew Research data profiles. Takes about 2 minutes.</p>
+    <div class="modal-actions">
+      <button class="btn-skip" onclick="closeModal()">Skip for now</button>
+      <button class="btn-primary" onclick="closeModal(true)">Take the Quiz</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="eyebrow">Pew Research Center · Jewish Americans in 2020</p>
+  <h1>Who Are American Jews,<br><em>and What Holds Them Together?</em></h1>
+  <p class="subtitle">An interactive portrait of Jewish life, identity, practice, and continuity — drawn from Pew's landmark 2020 survey of 4,718 Jewish adults.</p>
+  <p class="hero-byline">By Daniel Soufer &nbsp;·&nbsp; JS 382 Final Project</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="number">7.5M</span><div class="label">Jews in the U.S.</div></div>
+    <div class="hero-stat"><span class="number">61%</span><div class="label">Intermarried since 2010</div></div>
+    <div class="hero-stat"><span class="number">32%</span><div class="label">No denomination</div></div>
+    <div class="hero-stat"><span class="number">71%</span><div class="label">Lean Democratic</div></div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<div class="section-outer" id="quizSection">
+<section class="section">
+  <div class="section-header">
+    <p class="section-num">Interactive</p>
+    <h2>Which Denomination Do You Align With?</h2>
+    <p class="lead">Answer 10 questions about your beliefs, practices, and identity. Your responses are scored against the actual Pew data profiles for each denomination.</p>
+  </div>
+  <div class="quiz-wrap chart-card">
+    <div id="quizStart" class="quiz-start">
+      <p>Based on the 2020 Pew survey, each denomination has a distinct profile across practice, belief, identity, and politics. See where you land.</p>
+      <button class="btn-primary" onclick="startQuiz()">Begin Quiz</button>
+    </div>
+    <div id="quizQuestion" class="hidden">
+      <div class="quiz-progress">
+        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="progressFill" style="width:0%"></div></div>
+        <span class="quiz-progress-text" id="progressText">1 / 10</span>
+      </div>
+      <p class="quiz-question" id="questionText"></p>
+      <div class="quiz-options" id="optionsContainer"></div>
+    </div>
+    <div id="quizResult" class="quiz-result hidden">
+      <p class="result-match">Your alignment is most associated with</p>
+      <h3 class="result-name" id="resultName"></h3>
+      <p class="result-match" style="margin-bottom:4px">based on your answers.</p>
+      <p class="result-pew-note" id="resultPewNote"></p>
+      <p class="result-match" style="margin:22px 0 12px;text-align:left;letter-spacing:.1em">Here is how many of your answers aligned with each denomination:</p>
+      <div class="result-bars" id="resultBars"></div>
+      <div class="result-desc" id="resultDesc"></div>
+      <button class="btn-retake" onclick="resetQuiz()">Retake Quiz</button>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- §1 OVERVIEW -->
+<div class="section-outer">
+<section class="section">
+  <div class="section-header">
+    <p class="section-num">01 — Overview</p>
+    <h2>Four Very Different Communities</h2>
+    <p class="lead">American Jewry is not a monolith. The median age alone spans 27 years between Orthodox (35) and Conservative (62) — and the differences only deepen from there.</p>
+  </div>
+  <div class="grid-2">
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <p class="chart-title">Share of U.S. Jewish Adults by Denomination</p>
+        <div class="chart-filter" id="filter-pie"></div>
+      </div>
+      <div style="position:relative;height:240px;"><canvas id="denomPieChart"></canvas></div>
+    </div>
+    <div class="grid-2">
+      <div class="stat-card" style="border-top:3px solid var(--c-orth)"><div class="big-num" style="color:var(--c-orth)">9%</div><div class="stat-label">Orthodox</div><div class="sub-label">Median age 35 · 3.3 children avg</div></div>
+      <div class="stat-card" style="border-top:3px solid var(--c-cons)"><div class="big-num" style="color:var(--c-cons)">17%</div><div class="stat-label">Conservative</div><div class="sub-label">Median age 62 · 1.8 children avg</div></div>
+      <div class="stat-card" style="border-top:3px solid var(--c-ref)"><div class="big-num" style="color:var(--c-ref)">37%</div><div class="stat-label">Reform</div><div class="sub-label">Median age 53 · 1.4 children avg</div></div>
+      <div class="stat-card" style="border-top:3px solid var(--c-unaf)"><div class="big-num" style="color:var(--c-unaf)">32%</div><div class="stat-label">No Denomination</div><div class="sub-label">Fastest-growing segment</div></div>
+    </div>
+  </div>
+  <div class="insight"><strong>What this means for the future:</strong> Orthodox Jews are just 9% of U.S. Jewish adults today — but their median age of 35 and 3.3 children per adult means they are a far larger share of Jewish children. Conservative Jewry has the oldest median age (62) and the smallest household size, pointing to structural demographic decline.</div>
+</section>
+</div>
+
+<!-- §2 PRACTICE -->
+<div class="section-outer" id="s2">
+<section class="section">
+  <div class="section-header">
+    <p class="section-num">02 — Practice & Observance</p>
+    <h2>What American Jews Actually Do</h2>
+    <p class="lead">Religious practice varies enormously. Even culturally iconic holidays like the Passover Seder show a 60-point gap between Orthodox (97%) and unaffiliated Jews (37%).</p>
+  </div>
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <p class="chart-title">% Who Observe Each Practice</p>
+      <div class="chart-filter" id="filter-practice"></div>
+    </div>
+    <div style="position:relative;height:340px;"><canvas id="practiceChart"></canvas></div>
+  </div>
+  <div class="insight-grid">
+    <div class="insight" style="margin-top:0"><strong>The Seder as cultural glue:</strong> At 67%, even Reform Jews hold Passover Seders at high rates. The Seder functions less as religious obligation and more as a cultural anchor for non-Orthodox Jews.</div>
+    <div class="insight" style="margin-top:0"><strong>Kosher as boundary marker:</strong> Keeping kosher at home (Orthodox 95%, Reform 5%) is the single sharpest practice divide — a 90-point gap that maps almost perfectly onto Orthodox vs. non-Orthodox lines.</div>
+  </div>
+</section>
+</div>
+
+<!-- §3 IDENTITY -->
+<div class="section-outer">
+<section class="section">
+  <div class="section-header">
+    <p class="section-num">03 — Jewish Identity</p>
+    <h2>What Makes Someone Jewish?</h2>
+    <p class="lead">Across all measures of Jewish attachment, Orthodox Jews cluster near 100% while unaffiliated Jews cluster near 15–20%. The two groups are working with fundamentally different definitions of Jewishness.</p>
+  </div>
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <p class="chart-title">% With Strong Jewish Identification</p>
+      <div class="chart-filter" id="filter-identity"></div>
+    </div>
+    <div style="position:relative;height:320px;"><canvas id="identityChart"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <p class="chart-title">What Is "Essential" to Being Jewish? — All U.S. Jews</p>
+    <div style="position:relative;height:300px;"><canvas id="essentialChart"></canvas></div>
+  </div>
+  <div class="insight"><strong>Law vs. ethics:</strong> 76% of all Jews say remembering the Holocaust is essential — the highest-ranked item. Observing halakha ranks last at 15%. But among Orthodox Jews, 83% call halakha essential. These aren't just different priorities — they represent divergent conceptions of what Judaism fundamentally is.</div>
+</section>
+</div>
+
+<!-- §4 COMMUNITY -->
+<div class="section-outer">
+<section class="section">
+  <div class="section-header">
+    <p class="section-num">04 — Community & Connectedness</p>
+    <h2>How Connected Are American Jews?</h2>
+    <p class="lead">Orthodox Jews live in dense, highly Jewish social worlds — 88% say all or most of their close friends are Jewish. For Reform and unaffiliated Jews, Jewish social ties are far more diffuse.</p>
+  </div>
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <p class="chart-title">Community Engagement</p>
+      <div class="chart-filter" id="filter-community"></div>
+    </div>
+    <div style="position:relative;height:300px;"><canvas id="communityChart"></canvas></div>
+  </div>
+</section>
+</div>
+
+<!-- §5 CONTINUITY -->
+<div class="section-outer" id="s5">
+<section class="section">
+  <div class="section-header">
+    <p class="section-num">05 — The Continuity Question</p>
+    <h2>Is American Judaism Declining — or Just Changing?</h2>
+    <p class="lead">Intermarriage has dramatically accelerated. Orthodox communities are growing younger and larger while liberal denominations face steeper demographic headwinds.</p>
+  </div>
+  <div class="continuity-grid">
+    <div class="chart-card">
+      <p class="chart-title">Intermarriage Over Time — % with Non-Jewish Spouse</p>
+      <div style="position:relative;height:280px;"><canvas id="intermarriageChart"></canvas></div>
+    </div>
+    <div>
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <p class="chart-title">Average Children Per Adult</p>
+          <div class="chart-filter" id="filter-fertility"></div>
+        </div>
+        <div style="position:relative;height:180px;"><canvas id="fertilityChart"></canvas></div>
+      </div>
+      <div class="insight"><strong>Orthodox fertility:</strong> 3.3 children per adult vs. 1.4 for Reform. Combined with median age 35, Orthodox Jews are the fastest-growing segment of American Jewry.</div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <p class="chart-title">Continuity Indicators</p>
+      <div class="chart-filter" id="filter-continuity"></div>
+    </div>
+    <div style="position:relative;height:260px;"><canvas id="continuityChart"></canvas></div>
+  </div>
+  <div class="insight-grid">
+    <div class="insight" style="margin-top:0"><strong>Intermarriage by denomination:</strong> 98% of married Orthodox Jews have a Jewish spouse. Among non-Orthodox Jews married since 2010, 72% married a non-Jewish spouse.</div>
+    <div class="insight" style="margin-top:0"><strong>Raising children Jewish:</strong> Among intermarried couples, only 28% are raising children as Jewish by religion. 30% are raising them in no religion at all.</div>
+  </div>
+</section>
+</div>
+
+<!-- §6 POLITICS -->
+<div class="section-outer" id="s6">
+<section class="section">
+  <div class="section-header">
+    <p class="section-num">06 — Politics</p>
+    <h2>Overwhelmingly Democratic — Except Orthodox</h2>
+    <p class="lead">American Jews are one of the most reliably Democratic constituencies: 71% lean Democratic. But Orthodox Jews break sharply — 75% identify as Republican, mirroring white evangelical alignment.</p>
+  </div>
+  <div class="grid-2">
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <p class="chart-title">Party Identification</p>
+        <div class="chart-filter" id="filter-party"></div>
+      </div>
+      <div style="position:relative;height:280px;"><canvas id="partyChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <p class="chart-title">Political Ideology</p>
+        <div class="chart-filter" id="filter-ideology"></div>
+      </div>
+      <div style="position:relative;height:280px;"><canvas id="ideologyChart"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <p class="chart-title">Jews in Context — % Liberal & % Democrat Across U.S. Religious Groups</p>
+    <div style="position:relative;height:300px;"><canvas id="comparisonChart"></canvas></div>
+    <div class="insight" style="margin-top:14px"><strong>Where Jews sit in the American religious landscape:</strong> Reform Jews (80% Democrat, 55% Liberal) are among the most left-leaning religious groups in America. Orthodox Jews (20% Democrat, 9% Liberal) sit closer to white evangelical Christians — whose 82% Republican alignment makes them the most reliably conservative religious bloc. Evangelical and Catholic comparison data is from separate Pew religion and politics surveys.</div>
+  </div>
+  <div class="insight"><strong>The Orthodox exception:</strong> 75% of Orthodox Jews identify as Republican. Trump received 81% approval among Orthodox Jews (vs. 18% among Reform). This reflects Orthodox priorities around Israel, religious school funding, and social conservatism — a fundamentally different Jewish identity model.</div>
+</section>
+</div>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">American Jewish Life</div>
+      <p class="footer-copy">Data: Pew Research Center, <em>Jewish Americans in 2020</em> (pub. May 2021). Survey n = 4,718 Jewish adults, Nov. 2019 – June 2020. MOE ±3.1 pts.<br><br>Final Project · JS 382 · Daniel Soufer · 2026</p>
+    </div>
+    <div class="footer-links">
+      <a href="#">Pew Research Center</a>
+      <a href="#">Data Sources</a>
+      <a href="#">Methodology</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const DENOMS = ['Orthodox','Conservative','Reform','Unaffiliated'];
+const C = {
+  Orthodox:     {bg:'rgba(61,127,193,.78)',  border:'#3d7fc1'},
+  Conservative: {bg:'rgba(42,157,143,.78)',  border:'#2a9d8f'},
+  Reform:       {bg:'rgba(224,112,64,.78)',  border:'#e07040'},
+  Unaffiliated: {bg:'rgba(122,122,144,.78)', border:'#7a7a90'},
+};
+const charts = {};
+Chart.defaults.color = '#6b6b80';
+Chart.defaults.font.family = "'Public Sans', sans-serif";
+Chart.defaults.font.size = 11;
+const grid = 'rgba(0,0,0,0.07)';
+
+function ds(denom, data, extra={}) {
+  return {label:denom,data,backgroundColor:C[denom].bg,borderColor:C[denom].border,borderWidth:1.5,borderRadius:3,...extra};
+}
+
+// ── FILTER SYSTEM ──────────────────────────────
+// type: 'dataset' = denominations are Chart.js datasets
+//       'label'   = denominations are x-axis labels (need data rebuild)
+function initFilter(filterId, chartKey, type, rebuildFn, extraDatasets=[]) {
+  const el = document.getElementById(filterId);
+  if (!el) return;
+  const state = {Orthodox:true,Conservative:true,Reform:true,Unaffiliated:true};
+  const dcMap={Orthodox:'#3d7fc1',Conservative:'#2a9d8f',Reform:'#e07040',Unaffiliated:'#7a7a90'};
+  const shortLabel={Orthodox:'Orthodox',Conservative:'Conserv.',Reform:'Reform',Unaffiliated:'Unaffil.'};
+  let html = DENOMS.map(d =>
+    `<button class="cf-btn active" data-denom="${d}" style="--dc:${dcMap[d]}"><span class="cb-box"></span>${shortLabel[d]}</button>`
+  ).join('');
+  if (extraDatasets.length) {
+    html += `<span class="filter-sep"></span>`;
+    extraDatasets.forEach((xds, i) => {
+      html += `<button class="cf-btn ds-btn active" data-ds-index="${i}" style="--dc:${xds.color}"><span class="cb-box"></span>${xds.label}</button>`;
+    });
+  }
+  el.innerHTML = html;
+  el.querySelectorAll('.cf-btn[data-denom]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const d = btn.dataset.denom;
+      if (state[d] && Object.values(state).filter(Boolean).length === 1) return;
+      state[d] = !state[d];
+      btn.classList.toggle('active');
+      if (type === 'dataset') {
+        charts[chartKey].setDatasetVisibility(DENOMS.indexOf(d), state[d]);
+        charts[chartKey].update('active');
+      } else {
+        rebuildFn(state);
+      }
+    });
+  });
+  const dsState = extraDatasets.map(() => true);
+  el.querySelectorAll('.ds-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = +btn.dataset.dsIndex;
+      dsState[i] = !dsState[i];
+      btn.classList.toggle('active');
+      charts[chartKey].setDatasetVisibility(i, dsState[i]);
+      charts[chartKey].update('active');
+    });
+  });
+}
+
+// ── CHARTS ────────────────────────────────────
+
+// 1. DONUT
+charts.pie = new Chart(document.getElementById('denomPieChart'), {
+  type:'doughnut',
+  data:{labels:['Orthodox 9%','Conservative 17%','Reform 37%','No Denomination 32%','Other 5%'],
+    datasets:[{data:[9,17,37,32,5],backgroundColor:['#3d7fc1','#2a9d8f','#e07040','#7a7a90','#d0cbc5'],borderColor:'#ffffff',borderWidth:3}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+    plugins:{legend:{position:'right',labels:{color:'#6b6b80',padding:12,boxWidth:12}},tooltip:{callbacks:{label:c=>` ${c.label}`}}}}
+});
+
+initFilter('filter-pie','pie','label', state => {
+  DENOMS.forEach((d,i) => {
+    state[d] ? charts.pie.show(0,i) : charts.pie.hide(0,i);
+  });
+});
+
+// 2. PRACTICE — dataset filter
+const pData={Orthodox:[97,97,95,80,86],Conservative:[79,68,24,27,59],Reform:[67,45,5,16,36],Unaffiliated:[37,24,6,6,15]};
+charts.practice = new Chart(document.getElementById('practiceChart'), {
+  type:'bar',
+  data:{labels:['Passover Seder','Yom Kippur Fast','Keep Kosher at Home','Attend Synagogue Monthly','Mark Shabbat Meaningfully'],
+    datasets:DENOMS.map(d=>ds(d,pData[d]))},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    scales:{x:{max:100,grid:{color:grid},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},afterFit(s){s.width=200;}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}}}
+});
+initFilter('filter-practice','practice','dataset');
+
+// 3. IDENTITY — dataset filter
+const iData={Orthodox:[95,95,80,67],Conservative:[69,72,42,30],Reform:[40,49,23,12],Unaffiliated:[17,21,14,9]};
+charts.identity = new Chart(document.getElementById('identityChart'), {
+  type:'bar',
+  data:{labels:[['Being Jewish Is','Very Important'],['Strong Sense of','Belonging'],['Responsibility to','Help Fellow Jews'],['Much in Common with','Israeli Jews']],
+    datasets:DENOMS.map(d=>ds(d,iData[d]))},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{max:100,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}}}
+});
+initFilter('filter-identity','identity','dataset');
+
+// 4. ESSENTIAL (no filter — all Jews)
+charts.essential = new Chart(document.getElementById('essentialChart'), {
+  type:'bar',
+  data:{labels:[['Remembering','the Holocaust'],['Leading a Moral','& Ethical Life'],['Working for','Justice & Equality'],['Intellectual','Curiosity'],['Family','Traditions'],['Caring About','Israel'],['Jewish','Community'],['Traditional','Jewish Foods'],['Observing','Jewish Law']],
+    datasets:[{label:'% saying "essential"',data:[76,72,59,56,51,45,33,20,15],backgroundColor:'rgba(123,88,0,.72)',borderColor:'#7b5800',borderWidth:1.5,borderRadius:3}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{max:100,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}% say "essential"`}}}}
+});
+
+// 5. COMMUNITY — dataset filter
+const comData={Orthodox:[88,88,93],Conservative:[44,60,56],Reform:[23,40,37],Unaffiliated:[12,15,7]};
+charts.community = new Chart(document.getElementById('communityChart'), {
+  type:'bar',
+  data:{labels:[['All/Most Friends','Are Jewish'],['Donated to Jewish','Cause (Past Year)'],['Synagogue','Member']],
+    datasets:DENOMS.map(d=>ds(d,comData[d]))},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{max:100,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}}}
+});
+initFilter('filter-community','community','dataset');
+
+// 6. INTERMARRIAGE (no filter — overall trend)
+charts.intermarriage = new Chart(document.getElementById('intermarriageChart'), {
+  type:'line',
+  data:{labels:['Before 1980','1980–89','1990–99','2000–09','2010–2020'],
+    datasets:[{label:'% with non-Jewish spouse',data:[18,42,37,45,61],borderColor:'#7b5800',backgroundColor:'rgba(123,88,0,.07)',borderWidth:2.5,pointRadius:5,pointBackgroundColor:'#7b5800',fill:true,tension:.3}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{min:0,max:70,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}% intermarried`}}}}
+});
+
+// 7. FERTILITY — label filter
+const fertBase=[3.3,1.8,1.4,1.1];
+charts.fertility = new Chart(document.getElementById('fertilityChart'), {
+  type:'bar',
+  data:{labels:[...DENOMS],datasets:[{data:[...fertBase],backgroundColor:DENOMS.map(d=>C[d].bg),borderColor:DENOMS.map(d=>C[d].border),borderWidth:1.5,borderRadius:3}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    scales:{x:{max:4,grid:{color:grid},ticks:{stepSize:1}},y:{grid:{display:false},afterFit(s){s.width=110;}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} avg children per adult`}}}}
+});
+initFilter('filter-fertility','fertility','label', state => {
+  const idx=DENOMS.map((d,i)=>state[d]?i:-1).filter(i=>i>=0);
+  const al=DENOMS.filter(d=>state[d]);
+  charts.fertility.data.labels=al;
+  charts.fertility.data.datasets[0].data=idx.map(i=>fertBase[i]);
+  charts.fertility.data.datasets[0].backgroundColor=al.map(d=>C[d].bg);
+  charts.fertility.data.datasets[0].borderColor=al.map(d=>C[d].border);
+  charts.fertility.update('active');
+});
+
+// 8. CONTINUITY — label filter
+const contBase={tp:[96,83,72,52],ret:[95,86,81,49]};
+charts.continuity = new Chart(document.getElementById('continuityChart'), {
+  type:'bar',
+  data:{labels:[...DENOMS],datasets:[
+    {label:'Two Jewish Parents (%)',data:[...contBase.tp],backgroundColor:'rgba(123,88,0,.72)',borderColor:'#7b5800',borderWidth:1.5,borderRadius:3},
+    {label:'Denominational Retention Rate (%)',data:[...contBase.ret],backgroundColor:'rgba(123,88,0,.2)',borderColor:'#7b5800',borderWidth:1.5,borderRadius:3}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{max:100,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}}}
+});
+initFilter('filter-continuity','continuity','label', state => {
+  const idx=DENOMS.map((d,i)=>state[d]?i:-1).filter(i=>i>=0);
+  const al=DENOMS.filter(d=>state[d]);
+  charts.continuity.data.labels=al;
+  charts.continuity.data.datasets[0].data=idx.map(i=>contBase.tp[i]);
+  charts.continuity.data.datasets[1].data=idx.map(i=>contBase.ret[i]);
+  charts.continuity.update('active');
+}, [
+  {label:'Two Jewish Parents', color:'#7b5800'},
+  {label:'Retention Rate',     color:'#b09050'}
+]);
+
+// 9. PARTY — label filter
+const partyBase={dem:[20,70,80,75],rep:[75,28,18,22]};
+charts.party = new Chart(document.getElementById('partyChart'), {
+  type:'bar',
+  data:{labels:[...DENOMS],datasets:[
+    {label:'Democrat / Lean Dem',data:[...partyBase.dem],backgroundColor:'rgba(61,100,200,.78)',borderColor:'#3d64c8',borderWidth:1.5,borderRadius:3},
+    {label:'Republican / Lean Rep',data:[...partyBase.rep],backgroundColor:'rgba(200,60,60,.78)',borderColor:'#c83c3c',borderWidth:1.5,borderRadius:3}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{max:100,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}}}
+});
+initFilter('filter-party','party','label', state => {
+  const idx=DENOMS.map((d,i)=>state[d]?i:-1).filter(i=>i>=0);
+  const al=DENOMS.filter(d=>state[d]);
+  charts.party.data.labels=al;
+  charts.party.data.datasets[0].data=idx.map(i=>partyBase.dem[i]);
+  charts.party.data.datasets[1].data=idx.map(i=>partyBase.rep[i]);
+  charts.party.update('active');
+}, [
+  {label:'Democrat',   color:'#3d64c8'},
+  {label:'Republican', color:'#c83c3c'}
+]);
+
+// 10. IDEOLOGY — label filter
+const ideoBase={con:[60,23,8,10],mod:[26,36,37,29],lib:[9,39,55,61]};
+charts.ideology = new Chart(document.getElementById('ideologyChart'), {
+  type:'bar',
+  data:{labels:[...DENOMS],datasets:[
+    {label:'Conservative',data:[...ideoBase.con],backgroundColor:'rgba(200,60,60,.78)',borderColor:'#c83c3c',borderWidth:1},
+    {label:'Moderate',    data:[...ideoBase.mod],backgroundColor:'rgba(150,150,155,.6)',borderColor:'#969699',borderWidth:1},
+    {label:'Liberal',     data:[...ideoBase.lib],backgroundColor:'rgba(61,100,200,.78)',borderColor:'#3d64c8',borderWidth:1}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{stacked:true,max:100,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{stacked:true,grid:{display:false}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}}}
+});
+initFilter('filter-ideology','ideology','label', state => {
+  const idx=DENOMS.map((d,i)=>state[d]?i:-1).filter(i=>i>=0);
+  const al=DENOMS.filter(d=>state[d]);
+  charts.ideology.data.labels=al;
+  charts.ideology.data.datasets[0].data=idx.map(i=>ideoBase.con[i]);
+  charts.ideology.data.datasets[1].data=idx.map(i=>ideoBase.mod[i]);
+  charts.ideology.data.datasets[2].data=idx.map(i=>ideoBase.lib[i]);
+  charts.ideology.update('active');
+}, [
+  {label:'Conserv.',  color:'#c83c3c'},
+  {label:'Moderate',  color:'#969699'},
+  {label:'Liberal',   color:'#3d64c8'}
+]);
+
+// 11. COMPARISON (no filter — cross-group)
+charts.comparison = new Chart(document.getElementById('comparisonChart'), {
+  type:'bar',
+  data:{labels:[['Orthodox','Jews'],['Conservative','Jews'],['Reform','Jews'],['Unaffiliated','Jews'],['All U.S.','Jews'],['U.S.','Adults'],['U.S.','Christians'],['White','Evangelical'],['Catholic']],
+    datasets:[
+      {label:'% Democrat / Lean Dem',data:[20,70,80,75,71,52,43,15,56],backgroundColor:'rgba(61,100,200,.75)',borderColor:'#3d64c8',borderWidth:1.5,borderRadius:3},
+      {label:'% Liberal',data:[9,39,55,61,50,25,15,4,22],backgroundColor:'rgba(61,100,200,.28)',borderColor:'#3d64c8',borderWidth:1.5,borderRadius:3}
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{max:100,grid:{color:grid},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
+    plugins:{legend:{labels:{color:'#1c1b1d',boxWidth:12,padding:14}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}}}
+});
+
+// ── QUIZ ──────────────────────────────────────
+const QUIZ_COLORS={Orthodox:'#3d7fc1',Conservative:'#2a9d8f',Reform:'#e07040',Unaffiliated:'#7a7a90'};
+const QUIZ_SHARE={Orthodox:9,Conservative:17,Reform:37,Unaffiliated:32};
+const QUIZ_DESC={
+  Orthodox:`<strong>Orthodox Judaism</strong> holds that the Torah is divinely given and halakha (Jewish law) is fully binding. Orthodox Jews have the most intensive religious practices, the strongest Jewish social networks, and the youngest demographic profile of any denomination. They are also the only denomination that leans Republican.`,
+  Conservative:`<strong>Conservative Judaism</strong> occupies the middle ground: Jewish law is binding but evolves through rabbinic interpretation. Conservative Jews emphasize both tradition and adaptation. Once the largest denomination, Conservative Jewry has declined as younger Jews move to Reform or the unaffiliated category.`,
+  Reform:`<strong>Reform Judaism</strong> is the largest denomination (37%), emphasizing individual autonomy over strict halakhic obligation. Reform Jews define Jewishness largely through ethical values and cultural engagement rather than ritual observance. They are the most politically liberal denomination — 80% identify as Democrat.`,
+  Unaffiliated:`<strong>"Just Jewish"</strong> — nearly one-third of American Jews identify with no particular denomination. This group tends to see Jewishness as primarily cultural or ethnic rather than religious, holds the most progressive political views, and has the highest intermarriage rates. Their growth is the central concern of the Jewish continuity debate.`
+};
+const questions=[
+  {q:"How often do you attend synagogue?",opts:[{text:"Weekly or more",s:[3,1,0,0]},{text:"Monthly",s:[2,2,1,0]},{text:"A few times a year (High Holidays)",s:[1,2,2,1]},{text:"Rarely or never",s:[0,0,1,3]}]},
+  {q:"Do you keep kosher?",opts:[{text:"Yes, strictly",s:[3,0,0,0]},{text:"Mostly — I try to",s:[2,2,0,0]},{text:"Only outside the home, or partially",s:[1,2,1,0]},{text:"No",s:[0,0,2,3]}]},
+  {q:"How do you observe Shabbat?",opts:[{text:"Full observance — no work, synagogue, candles, kiddush",s:[3,1,0,0]},{text:"Some rituals at home (candles, Friday dinner)",s:[1,2,2,0]},{text:"Loosely — it feels meaningful but I'm not strict",s:[0,1,2,1]},{text:"I don't observe Shabbat",s:[0,0,1,3]}]},
+  {q:"What does being Jewish primarily mean to you?",opts:[{text:"A religion — faith and practice come first",s:[3,2,1,0]},{text:"A blend of religion, culture, and ancestry",s:[2,3,2,1]},{text:"Primarily a cultural or ethnic identity",s:[0,1,2,2]},{text:"Mainly ancestry — religion isn't really part of it",s:[0,0,1,3]}]},
+  {q:"Is observing Jewish law (halakha) essential to being Jewish?",opts:[{text:"Absolutely — it defines what Jewish life is",s:[3,1,0,0]},{text:"Important, but you can be Jewish without strict observance",s:[1,3,1,0]},{text:"Not essential — ethics and values matter more",s:[0,1,3,1]},{text:"No — Jewishness doesn't require religious law",s:[0,0,1,3]}]},
+  {q:"How important is caring about Israel to your Jewish identity?",opts:[{text:"Essential — Israel is central to being Jewish",s:[3,2,1,0]},{text:"Very important, though not the only thing",s:[2,2,2,1]},{text:"Somewhat important — I care, but it's not defining",s:[1,1,2,2]},{text:"Not particularly important to my Jewish identity",s:[0,0,1,3]}]},
+  {q:"Your close friends are...",opts:[{text:"Almost all Jewish",s:[3,1,0,0]},{text:"Mostly Jewish",s:[2,2,1,0]},{text:"About half and half",s:[1,2,2,1]},{text:"Mostly not Jewish",s:[0,0,1,3]}]},
+  {q:"Should rabbis perform interfaith (Jewish/non-Jewish) weddings?",opts:[{text:"No — marriage should be between two Jews",s:[3,1,0,0]},{text:"It depends on the specific circumstances",s:[1,3,1,1]},{text:"Yes, if the rabbi chooses to",s:[0,2,3,2]},{text:"Definitely yes — all loving relationships deserve celebration",s:[0,0,2,3]}]},
+  {q:"How do you think about God?",opts:[{text:"I believe in God as described in the Torah / Bible",s:[3,2,1,0]},{text:"I believe in some higher power or spiritual force",s:[1,2,2,1]},{text:"I'm uncertain or agnostic",s:[0,1,2,2]},{text:"I don't believe in God or a higher power",s:[0,0,1,3]}]},
+  {q:"How do you lean politically?",opts:[{text:"Conservative / Republican",s:[3,1,0,0]},{text:"Moderate",s:[1,2,1,1]},{text:"Liberal / Democrat",s:[0,2,3,2]},{text:"Very progressive",s:[0,1,2,3]}]},
+];
+const MAX_SCORE=questions.length*3;
+let scores=[0,0,0,0],wins=[0,0,0,0],currentQ=0;
+
+function startQuiz(){
+  scores=[0,0,0,0];wins=[0,0,0,0];currentQ=0;
+  document.getElementById('quizStart').classList.add('hidden');
+  document.getElementById('quizResult').classList.add('hidden');
+  document.getElementById('quizQuestion').classList.remove('hidden');
+  renderQuestion();
+}
+function renderQuestion(){
+  const q=questions[currentQ];
+  document.getElementById('progressFill').style.width=(currentQ/questions.length*100)+'%';
+  document.getElementById('progressText').textContent=`${currentQ+1} / ${questions.length}`;
+  document.getElementById('questionText').textContent=q.q;
+  const c=document.getElementById('optionsContainer');c.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='quiz-option';btn.textContent=opt.text;
+    btn.onclick=()=>selectAnswer(i);c.appendChild(btn);
+  });
+}
+function selectAnswer(i){
+  const opt=questions[currentQ].opts[i];
+  opt.s.forEach((v,j)=>scores[j]+=v);
+  const maxS=Math.max(...opt.s);
+  if(maxS>0) opt.s.forEach((v,j)=>{if(v===maxS)wins[j]++;});
+  document.querySelectorAll('.quiz-option')[i].classList.add('selected');
+  document.querySelectorAll('.quiz-option').forEach(b=>b.style.pointerEvents='none');
+  setTimeout(()=>{currentQ++;currentQ<questions.length?renderQuestion():showResult();},260);
+}
+function showResult(){
+  document.getElementById('quizQuestion').classList.add('hidden');
+  const pcts=scores.map(s=>Math.round(s/MAX_SCORE*100));
+  const topIndex=pcts.indexOf(Math.max(...pcts));
+  const topDenom=DENOMS[topIndex];
+  const rName=document.getElementById('resultName');
+  const denomDisplay={Orthodox:'Orthodox Judaism',Conservative:'Conservative Judaism',Reform:'Reform Judaism',Unaffiliated:'No Denomination'};
+  rName.textContent=denomDisplay[topDenom];rName.style.color=QUIZ_COLORS[topDenom];
+  document.getElementById('resultPewNote').textContent=`${QUIZ_SHARE[topDenom]}% of U.S. Jews identify as ${topDenom==='Unaffiliated'?'unaffiliated':topDenom} in the 2020 Pew survey.`;
+  const barsEl=document.getElementById('resultBars');barsEl.innerHTML='';
+  DENOMS.map((d,i)=>({d,w:wins[i]})).sort((a,b)=>b.w-a.w).forEach(({d,w})=>{
+    const isTop=d===topDenom;
+    barsEl.innerHTML+=`<div class="result-bar-row">
+      <span class="result-bar-label${isTop?' top':''}">${d}</span>
+      <div class="result-bar-track"><div class="result-bar-fill" style="width:0%;background:${QUIZ_COLORS[d]}" data-target="${Math.round(w/questions.length*100)}"></div></div>
+      <span class="result-bar-pct${isTop?' top':''}">${w===1?'1':''+w} / 10 questions</span>
+    </div>`;
+  });
+  document.getElementById('resultDesc').innerHTML=QUIZ_DESC[topDenom];
+  document.getElementById('quizResult').classList.remove('hidden');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.querySelectorAll('.result-bar-fill').forEach(el=>{
+      el.style.transition='width .8s ease';el.style.width=el.dataset.target+'%';
+    });
+  }));
+}
+function resetQuiz(){
+  document.getElementById('quizResult').classList.add('hidden');
+  document.getElementById('quizStart').classList.remove('hidden');
+}
+function closeWelcome(){
+  document.getElementById('welcomeModal').style.display='none';
+  document.getElementById('quizModal').style.display='flex';
+}
+function closeModal(startIt){
+  document.getElementById('quizModal').style.display='none';
+  if(startIt){
+    document.getElementById('quizSection').scrollIntoView({behavior:'smooth'});
+    setTimeout(startQuiz,500);
+  }
+}
+</script>
+</body>
+</html>
