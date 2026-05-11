@@ -908,7 +908,7 @@ charts.culturePractice = new Chart(document.getElementById('culturePracticeChart
     datasets:[{label:'% who did this in the past year',data:[72,62,57,44,43,42,36,30],
       backgroundColor:'rgba(61,127,193,.55)',borderColor:'#3d7fc1',borderWidth:1.5,borderRadius:3}]},
   options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-    scales:{x:{max:80,grid:{color:grid},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},afterFit(s){s.width=260;}}},
+    scales:{x:{max:80,grid:{color:grid},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},afterFit(s){s.width=280;}}},
     plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}% did this in the past year`}}}}
 });
 
